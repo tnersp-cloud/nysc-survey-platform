@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import NyscSurvey from './components/NyscSurvey'
 import AdminPanel from './components/AdminPanel'
+import { fetchAllSurveys, saveSurveyToDatabase } from './utils/supabaseClient'
+import { calculateEligibilityStatus } from './utils/excelExport'
 
 function App() {
   const [isAdminView, setIsAdminView] = useState(false)
   const [surveyData, setSurveyData] = useState([])
 
-  // Load survey data from localStorage and check URL for admin access
+  // Load survey data from Supabase on mount
   useEffect(() => {
-    const stored = localStorage.getItem('nyscSurveyData')
-    if (stored) {
-      setSurveyData(JSON.parse(stored))
+    const loadData = async () => {
+      const surveys = await fetchAllSurveys()
+      setSurveyData(surveys)
     }
+    loadData()
 
     // Check URL parameters for admin access
     const params = new URLSearchParams(window.location.search)
@@ -20,31 +23,22 @@ function App() {
     }
   }, [])
 
-  const handleSurveySubmit = (data) => {
-    const updatedData = [
-      ...surveyData,
-      {
+  const handleSurveySubmit = async (data) => {
+    try {
+      const eligibilityStatus = calculateEligibilityStatus(data)
+      
+      // Save to Supabase
+      await saveSurveyToDatabase({
         ...data,
-        timestamp: new Date().toISOString(),
-        eligibilityStatus: calculateEligibilityStatus(data)
-      }
-    ]
-    setSurveyData(updatedData)
-    localStorage.setItem('nyscSurveyData', JSON.stringify(updatedData))
-  }
-
-  const calculateEligibilityStatus = (data) => {
-    const income = parseFloat(data.monthlyIncome) || 0
-    const commitment = data.savingsCommitment === 'Yes'
-    
-    if (income >= 150000 && commitment) {
-      return 'High Priority'
-    } else if (income >= 100000 && commitment) {
-      return 'Qualified'
-    } else if (commitment) {
-      return 'Standard Review'
-    } else {
-      return 'Follow Up Required'
+        eligibilityStatus
+      })
+      
+      // Refresh survey data from database
+      const surveys = await fetchAllSurveys()
+      setSurveyData(surveys)
+    } catch (error) {
+      console.error('Failed to submit survey:', error)
+      // Don't block the user — the survey already shows the success screen
     }
   }
 

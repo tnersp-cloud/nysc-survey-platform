@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { exportBatchToExcel } from '../utils/excelExport'
+import { exportBatchToExcel, generateExcelBuffer } from '../utils/excelExport'
 
 const AdminPanel = ({ surveyData = [], onBack }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [adminPassword, setAdminPassword] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [selectedRecords, setSelectedRecords] = useState(new Set())
+  const [isEmailLoading, setIsEmailLoading] = useState(false)
 
   // Simple password authentication (in production, use proper backend auth)
   const handleLogin = () => {
@@ -62,6 +63,66 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
       return
     }
     exportBatchToExcel(surveyData, `NYSC_Survey_Complete_Export_${Date.now()}.xlsx`)
+  }
+
+  const sendEmailExport = async (dataToExport, filename) => {
+    try {
+      setIsEmailLoading(true)
+      
+      // Generate Excel buffer
+      const excelBuffer = generateExcelBuffer(dataToExport)
+      const base64Data = excelBuffer.toString('base64')
+      
+      // Send to backend
+      const response = await fetch((import.meta.env.VITE_API_URL || 'http://localhost:3001') + '/api/send-export', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          excelData: base64Data,
+          filename: filename
+        })
+      })
+      
+      const result = await response.json()
+      
+      if (response.ok) {
+        alert(`✅ Email sent successfully to info@axplimited.com!\n\nFile: ${filename}`)
+      } else {
+        alert(`❌ Error sending email: ${result.error}`)
+      }
+    } catch (error) {
+      console.error('Email error:', error)
+      alert(`❌ Failed to send email: ${error.message}\n\nMake sure backend server is running on port 3001`)
+    } finally {
+      setIsEmailLoading(false)
+    }
+  }
+
+  const handleExportAndEmailSelected = () => {
+    if (selectedRecords.size === 0) {
+      alert('Please select at least one record to export')
+      return
+    }
+    
+    const selectedData = Array.from(selectedRecords).map(idx => surveyData[idx])
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[-:]/g, '')
+    const filename = `NYSC_Survey_Export_${timestamp}.xlsx`
+    
+    sendEmailExport(selectedData, filename)
+  }
+
+  const handleExportAndEmailAll = () => {
+    if (surveyData.length === 0) {
+      alert('No survey data available to export')
+      return
+    }
+    
+    const timestamp = new Date().toISOString().slice(0, 19).replace(/[-:]/g, '')
+    const filename = `NYSC_Survey_Complete_Export_${timestamp}.xlsx`
+    
+    sendEmailExport(surveyData, filename)
   }
 
   if (!isAuthenticated) {
@@ -151,7 +212,7 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
         {/* Export Controls */}
         <div className="bg-white rounded-lg shadow p-6 mb-8">
           <h2 className="text-xl font-bold text-gray-800 mb-4">Export Options</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <button
               onClick={handleExportAll}
               className="bg-teal text-white font-bold py-3 px-6 rounded-lg hover:bg-teal-dark transition"
@@ -169,6 +230,32 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
             >
               📋 Export Selected ({selectedRecords.size})
             </button>
+          </div>
+
+          {/* Email Export Options */}
+          <div className="border-t-2 border-gray-200 pt-4">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">📧 Send via Email to info@axplimited.com</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <button
+                onClick={handleExportAndEmailAll}
+                disabled={isEmailLoading}
+                className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isEmailLoading ? '⏳ Sending...' : '📧 Email All Records'}
+              </button>
+              <button
+                onClick={handleExportAndEmailSelected}
+                disabled={selectedRecords.size === 0 || isEmailLoading}
+                className={`font-bold py-3 px-6 rounded-lg transition ${
+                  selectedRecords.size === 0 || isEmailLoading
+                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                }`}
+              >
+                {isEmailLoading ? '⏳ Sending...' : `📧 Email Selected (${selectedRecords.size})`}
+              </button>
+            </div>
+            <p className="text-xs text-gray-500 mt-3 italic">Backend server must be running. Run: npm run dev:full</p>
           </div>
         </div>
 
