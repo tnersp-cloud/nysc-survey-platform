@@ -10,6 +10,7 @@ const HEADERS = [
   'Age Range',
   'Gender',
   'Current Status',
+  'Ownership Statement',
   'State',
   'Field of Study',
   // Section 2: Housing Aspiration
@@ -80,6 +81,7 @@ const buildRow = (data, timestamp) => ({
   'Age Range': data.age || '',
   'Gender': data.gender || '',
   'Current Status': data.currentStatus || '',
+  'Ownership Statement': data.ownershipStatement || '',
   'State': data.state || '',
   'Field of Study': data.fieldOfStudy || '',
   'Believes Home Before 35': data.believeHomeBefore35 || '',
@@ -113,6 +115,7 @@ const COL_WIDTHS = [
   { wch: 12 }, // Age Range
   { wch: 16 }, // Gender
   { wch: 20 }, // Current Status
+  { wch: 34 }, // Ownership Statement
   { wch: 18 }, // State
   { wch: 22 }, // Field of Study
   { wch: 22 }, // Believes Home Before 35

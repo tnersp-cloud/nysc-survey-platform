@@ -45,20 +45,54 @@ Your NYSC Survey Platform now has:
 ```sql
 CREATE TABLE survey_responses (
   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-  full_name TEXT NOT NULL,
-  phone_number TEXT NOT NULL,
-  nysc_stage TEXT NOT NULL,
-  monthly_income DECIMAL NOT NULL,
-  desired_location TEXT NOT NULL,
-  savings_commitment TEXT NOT NULL,
-  eligibility_status TEXT NOT NULL,
-  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+
+  age TEXT,
+  gender TEXT,
+  current_status TEXT,
+  ownership_statement TEXT,
+  state TEXT,
+  field_of_study TEXT,
+
+  believe_home_before_35 TEXT,
+  ideal_home_age TEXT,
+  home_type TEXT,
+  biggest_obstacle TEXT,
+  preferred_city TEXT,
+  preferred_city_other TEXT,
+
+  saves_monthly TEXT,
+  monthly_savings_amount TEXT,
+  will_join_savings_plan TEXT,
+  equity_contribution TEXT,
+
+  preferred_product TEXT,
+  would_join_small_amount TEXT,
+  wants_investment_returns TEXT,
+  desired_benefits TEXT[],
+
+  wants_early_access TEXT,
+  wants_free_assessment TEXT,
+
+  full_name TEXT,
+  phone_number TEXT,
+  email_address TEXT,
+
+  eligibility_status TEXT
 );
 
 -- Create index for faster queries
-CREATE INDEX idx_timestamp ON survey_responses(timestamp DESC);
-CREATE INDEX idx_eligibility ON survey_responses(eligibility_status);
+CREATE INDEX idx_survey_created_at ON survey_responses(created_at DESC);
+CREATE INDEX idx_survey_eligibility ON survey_responses(eligibility_status);
+```
+
+If you already have an earlier version of the table, run this update instead:
+
+```sql
+ALTER TABLE survey_responses
+  ADD COLUMN ownership_statement TEXT,
+  ADD COLUMN preferred_city_other TEXT,
+  ADD COLUMN desired_benefits TEXT[];
 ```
 
 ---

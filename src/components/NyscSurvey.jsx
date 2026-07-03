@@ -41,6 +41,19 @@ const sections = [
         ],
       },
       {
+        id: 'ownershipStatement',
+        number: 22,
+        text: 'Which statement best describes you?',
+        type: 'radio',
+        field: 'ownershipStatement',
+        options: [
+          'I want to own a home immediately.',
+          'I am willing to save first.',
+          'I want to invest while preparing for home ownership.',
+          'I need guidance before I can decide.',
+        ],
+      },
+      {
         id: 'state',
         number: 4,
         text: 'Which state are you currently serving or residing in?',
@@ -261,6 +274,7 @@ const initialFormData = {
   age: '',
   gender: '',
   currentStatus: '',
+  ownershipStatement: '',
   state: '',
   fieldOfStudy: '',
   // Section 2: Housing Aspiration

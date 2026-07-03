@@ -42,6 +42,7 @@ export const saveSurveyToDatabase = async (surveyData) => {
           // Section 5: Programme Interest
           wants_early_access: surveyData.wantsEarlyAccess,
           wants_free_assessment: surveyData.wantsFreeAssessment,
+          ownership_statement: surveyData.ownershipStatement,
           full_name: surveyData.fullName,
           phone_number: surveyData.phoneNumber,
           email_address: surveyData.emailAddress,
@@ -65,6 +66,38 @@ export const saveSurveyToDatabase = async (surveyData) => {
 /**
  * Fetch all survey responses from Supabase
  */
+const mapSurveyRow = (row) => ({
+  ...row,
+  currentStatus: row.current_status,
+  fieldOfStudy: row.field_of_study,
+  believeHomeBefore35: row.believe_home_before_35,
+  idealHomeAge: row.ideal_home_age,
+  homeType: row.home_type,
+  biggestObstacle: row.biggest_obstacle,
+  preferredCity: row.preferred_city,
+  preferredCityOther: row.preferred_city_other,
+  savesMonthly: row.saves_monthly,
+  monthlySavingsAmount: row.monthly_savings_amount,
+  willJoinSavingsPlan: row.will_join_savings_plan,
+  equityContribution: row.equity_contribution,
+  preferredProduct: row.preferred_product,
+  wouldJoinSmallAmount: row.would_join_small_amount,
+  wantsInvestmentReturns: row.wants_investment_returns,
+  desiredBenefits: Array.isArray(row.desired_benefits)
+    ? row.desired_benefits
+    : typeof row.desired_benefits === 'string'
+    ? row.desired_benefits.split(',').map((v) => v.trim()).filter(Boolean)
+    : [],
+  wantsEarlyAccess: row.wants_early_access,
+  wantsFreeAssessment: row.wants_free_assessment,
+  fullName: row.full_name,
+  phoneNumber: row.phone_number,
+  emailAddress: row.email_address,
+  ownershipStatement: row.ownership_statement,
+  eligibilityStatus: row.eligibility_status,
+  timestamp: row.created_at,
+})
+
 export const fetchAllSurveys = async () => {
   try {
     const { data, error } = await supabase
@@ -77,7 +110,7 @@ export const fetchAllSurveys = async () => {
       throw error
     }
 
-    return data || []
+    return (data || []).map(mapSurveyRow)
   } catch (error) {
     console.error('Failed to fetch surveys:', error.message)
     return []

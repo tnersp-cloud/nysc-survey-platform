@@ -294,8 +294,9 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
                     </th>
                     <th className="px-6 py-3 text-left font-semibold">Name</th>
                     <th className="px-6 py-3 text-left font-semibold">Phone</th>
-                    <th className="px-6 py-3 text-left font-semibold">Income</th>
-                    <th className="px-6 py-3 text-left font-semibold">Status</th>
+                    <th className="px-6 py-3 text-left font-semibold">Current Status</th>
+                    <th className="px-6 py-3 text-left font-semibold">Ownership Statement</th>
+                    <th className="px-6 py-3 text-left font-semibold">Eligibility</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -313,25 +314,30 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
                         />
                       </td>
                       <td className="px-6 py-3 font-semibold text-gray-800">
-                        {record.fullName}
+                        {record.fullName || record.full_name || 'Unknown'}
                       </td>
-                      <td className="px-6 py-3 text-gray-600">{record.phoneNumber}</td>
                       <td className="px-6 py-3 text-gray-600">
-                        ₦{parseFloat(record.monthlyIncome || 0).toLocaleString()}
+                        {record.phoneNumber || record.phone_number || '—'}
+                      </td>
+                      <td className="px-6 py-3 text-gray-600">
+                        {record.currentStatus || record.current_status || '—'}
+                      </td>
+                      <td className="px-6 py-3 text-gray-600">
+                        {record.ownershipStatement || record.ownership_statement || '—'}
                       </td>
                       <td className="px-6 py-3">
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            record.eligibilityStatus === 'High Priority'
+                            (record.eligibilityStatus || record.eligibility_status) === 'High Priority'
                               ? 'bg-green-100 text-green-800'
-                              : record.eligibilityStatus === 'Qualified'
+                              : (record.eligibilityStatus || record.eligibility_status) === 'Qualified'
                               ? 'bg-blue-100 text-blue-800'
-                              : record.eligibilityStatus === 'Standard Review'
+                              : (record.eligibilityStatus || record.eligibility_status) === 'Standard Review'
                               ? 'bg-yellow-100 text-yellow-800'
                               : 'bg-orange-100 text-orange-800'
                           }`}
                         >
-                          {record.eligibilityStatus}
+                          {record.eligibilityStatus || record.eligibility_status || 'Unknown'}
                         </span>
                       </td>
                     </tr>
