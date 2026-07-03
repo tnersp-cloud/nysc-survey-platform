@@ -281,53 +281,67 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full text-sm whitespace-nowrap">
                 <thead>
                   <tr className="bg-teal text-white">
-                    <th className="px-6 py-3 text-left">
+                    <th className="px-4 py-3 text-left sticky left-0 bg-teal z-10">
                       <input
                         type="checkbox"
                         checked={selectedRecords.size === surveyData.length && surveyData.length > 0}
                         onChange={selectAll}
-                        className="w-5 h-5"
+                        className="w-4 h-4"
                       />
                     </th>
-                    <th className="px-6 py-3 text-left font-semibold">Name</th>
-                    <th className="px-6 py-3 text-left font-semibold">Phone</th>
-                    <th className="px-6 py-3 text-left font-semibold">Current Status</th>
-                    <th className="px-6 py-3 text-left font-semibold">Ownership Statement</th>
-                    <th className="px-6 py-3 text-left font-semibold">Eligibility</th>
+                    <th className="px-4 py-3 text-left font-semibold sticky left-12 bg-teal z-10">Name</th>
+                    <th className="px-4 py-3 text-left font-semibold">Eligibility</th>
+                    <th className="px-4 py-3 text-left font-semibold">Phone</th>
+                    <th className="px-4 py-3 text-left font-semibold">Email</th>
+                    <th className="px-4 py-3 text-left font-semibold">Age</th>
+                    <th className="px-4 py-3 text-left font-semibold">Gender</th>
+                    <th className="px-4 py-3 text-left font-semibold">State</th>
+                    <th className="px-4 py-3 text-left font-semibold">Current Status</th>
+                    <th className="px-4 py-3 text-left font-semibold">Field of Study</th>
+                    <th className="px-4 py-3 text-left font-semibold">Ownership Statement</th>
+                    <th className="px-4 py-3 text-left font-semibold">Home by 35?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Ideal Home Age</th>
+                    <th className="px-4 py-3 text-left font-semibold">Home Type</th>
+                    <th className="px-4 py-3 text-left font-semibold">Biggest Obstacle</th>
+                    <th className="px-4 py-3 text-left font-semibold">Preferred City</th>
+                    <th className="px-4 py-3 text-left font-semibold">Saves Monthly?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Monthly Savings</th>
+                    <th className="px-4 py-3 text-left font-semibold">Join Savings Plan?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Equity Contribution</th>
+                    <th className="px-4 py-3 text-left font-semibold">Preferred Product</th>
+                    <th className="px-4 py-3 text-left font-semibold">Start Small (5k-10k)?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Investment Returns?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Desired Benefits</th>
+                    <th className="px-4 py-3 text-left font-semibold">Early Access?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Free Assessment?</th>
+                    <th className="px-4 py-3 text-left font-semibold">Date Submitted</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {surveyData.map((record, idx) => (
+                  {surveyData.map((record, idx) => {
+                    const isSelected = selectedRecords.has(idx);
+                    return (
                     <tr
                       key={idx}
-                      className="border-b border-gray-200 hover:bg-gray-50 transition"
+                      className={`border-b border-gray-200 transition ${isSelected ? 'bg-teal-50' : 'hover:bg-gray-50'}`}
                     >
-                      <td className="px-6 py-3">
+                      <td className={`px-4 py-3 sticky left-0 z-10 ${isSelected ? 'bg-teal-50' : 'bg-white'}`}>
                         <input
                           type="checkbox"
-                          checked={selectedRecords.has(idx)}
+                          checked={isSelected}
                           onChange={() => toggleRecordSelection(idx)}
-                          className="w-5 h-5"
+                          className="w-4 h-4"
                         />
                       </td>
-                      <td className="px-6 py-3 font-semibold text-gray-800">
-                        {record.fullName || record.full_name || 'Unknown'}
+                      <td className={`px-4 py-3 font-semibold text-gray-800 sticky left-12 z-10 ${isSelected ? 'bg-teal-50' : 'bg-white'}`}>
+                        {record.fullName || record.full_name || '—'}
                       </td>
-                      <td className="px-6 py-3 text-gray-600">
-                        {record.phoneNumber || record.phone_number || '—'}
-                      </td>
-                      <td className="px-6 py-3 text-gray-600">
-                        {record.currentStatus || record.current_status || '—'}
-                      </td>
-                      <td className="px-6 py-3 text-gray-600">
-                        {record.ownershipStatement || record.ownership_statement || '—'}
-                      </td>
-                      <td className="px-6 py-3">
+                      <td className="px-4 py-3">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold ${
+                          className={`px-2 py-1 rounded-full text-xs font-bold ${
                             (record.eligibilityStatus || record.eligibility_status) === 'High Priority'
                               ? 'bg-green-100 text-green-800'
                               : (record.eligibilityStatus || record.eligibility_status) === 'Qualified'
@@ -340,8 +354,42 @@ const AdminPanel = ({ surveyData = [], onBack }) => {
                           {record.eligibilityStatus || record.eligibility_status || 'Unknown'}
                         </span>
                       </td>
+                      <td className="px-4 py-3 text-gray-600">{record.phoneNumber || record.phone_number || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.emailAddress || record.email_address || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.age || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.gender || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.state || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.currentStatus || record.current_status || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.fieldOfStudy || record.field_of_study || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.ownershipStatement || record.ownership_statement || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.believeHomeBefore35 || record.believe_home_before_35 || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.idealHomeAge || record.ideal_home_age || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.homeType || record.home_type || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.biggestObstacle || record.biggest_obstacle || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {record.preferredCity === '__other__' || record.preferred_city === '__other__' 
+                          ? (record.preferredCityOther || record.preferred_city_other || '—') 
+                          : (record.preferredCity || record.preferred_city || '—')}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{record.savesMonthly || record.saves_monthly || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.monthlySavingsAmount || record.monthly_savings_amount || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.willJoinSavingsPlan || record.will_join_savings_plan || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.equityContribution || record.equity_contribution || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.preferredProduct || record.preferred_product || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.wouldJoinSmallAmount || record.would_join_small_amount || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.wantsInvestmentReturns || record.wants_investment_returns || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {Array.isArray(record.desiredBenefits) 
+                          ? record.desiredBenefits.join(', ') 
+                          : record.desired_benefits || '—'}
+                      </td>
+                      <td className="px-4 py-3 text-gray-600">{record.wantsEarlyAccess || record.wants_early_access || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">{record.wantsFreeAssessment || record.wants_free_assessment || '—'}</td>
+                      <td className="px-4 py-3 text-gray-600">
+                        {record.timestamp || record.created_at ? new Date(record.timestamp || record.created_at).toLocaleDateString() : '—'}
+                      </td>
                     </tr>
-                  ))}
+                  )})}
                 </tbody>
               </table>
             </div>
