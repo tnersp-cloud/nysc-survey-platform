@@ -889,9 +889,10 @@ const NyscSurvey = ({ onSubmit }) => {
                 </motion.button>
                 <motion.button
                   onClick={handleSkip}
-                  whileHover={{ scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="nav-btn nav-skip"
+                  disabled={currentQuestion.id === 'contact'}
+                  whileHover={currentQuestion.id !== 'contact' ? { scale: 1.04, y: -2 } : {}}
+                  whileTap={currentQuestion.id !== 'contact' ? { scale: 0.96 } : {}}
+                  className={`nav-btn nav-skip ${currentQuestion.id === 'contact' ? 'disabled' : ''}`}
                 >
                   Skip
                 </motion.button>
