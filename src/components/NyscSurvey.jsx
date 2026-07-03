@@ -406,8 +406,11 @@ const NyscSurvey = ({ onSubmit }) => {
     return !!formData[q.field]
   }
 
-  const goNext = () => {
-    if (!isCurrentValid()) return
+  const goNext = (skip = false) => {
+    // If not skipping, enforce validation
+    // Wait, since event might be passed, ensure skip is boolean
+    const isSkipping = skip === true;
+    if (!isSkipping && !isCurrentValid()) return
     setDirection(1)
 
     // If there's a next question in the section
@@ -421,6 +424,10 @@ const NyscSurvey = ({ onSubmit }) => {
       // Submit
       handleSubmit()
     }
+  }
+
+  const handleSkip = () => {
+    goNext(true)
   }
 
   const goPrev = () => {
@@ -881,7 +888,15 @@ const NyscSurvey = ({ onSubmit }) => {
                   ← Previous
                 </motion.button>
                 <motion.button
-                  onClick={goNext}
+                  onClick={handleSkip}
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="nav-btn nav-skip"
+                >
+                  Skip
+                </motion.button>
+                <motion.button
+                  onClick={() => goNext(false)}
                   disabled={!isCurrentValid()}
                   whileHover={isCurrentValid() ? { scale: 1.04, y: -2 } : {}}
                   whileTap={isCurrentValid() ? { scale: 0.96 } : {}}

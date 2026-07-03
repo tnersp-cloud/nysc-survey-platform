@@ -457,6 +457,15 @@
 .nav-prev:hover:not(.disabled) {
   background: #e2e8f0;
 }
+.nav-skip {
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #cbd5e1;
+}
+.nav-skip:hover:not(.disabled) {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
 .nav-next {
   background: linear-gradient(135deg, #0d7a7a, #1e7e74);
   color: #fff;
