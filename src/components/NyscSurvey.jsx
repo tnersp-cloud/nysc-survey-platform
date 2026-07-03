@@ -41,21 +41,15 @@ const sections = [
         ],
       },
       {
-        id: 'ownershipStatement',
-        number: 22,
-        text: 'Which statement best describes you?',
-        type: 'radio',
-        field: 'ownershipStatement',
-        options: [
-          'I want to own a home immediately.',
-          'I am willing to save first.',
-          'I want to invest while preparing for home ownership.',
-          'I need guidance before I can decide.',
-        ],
+        id: 'contact',
+        number: 4,
+        text: 'Please provide your contact details',
+        type: 'contact',
+        fields: ['fullName', 'phoneNumber', 'emailAddress'],
       },
       {
         id: 'state',
-        number: 4,
+        number: 5,
         text: 'Which state are you currently serving or residing in?',
         type: 'text',
         field: 'state',
@@ -63,7 +57,7 @@ const sections = [
       },
       {
         id: 'fieldOfStudy',
-        number: 5,
+        number: 6,
         text: 'What is your field of study?',
         type: 'text',
         field: 'fieldOfStudy',
@@ -78,7 +72,7 @@ const sections = [
     questions: [
       {
         id: 'believeHomeBefore35',
-        number: 6,
+        number: 7,
         text: 'Do you currently believe you can own a home before age 35?',
         type: 'radio',
         field: 'believeHomeBefore35',
@@ -86,7 +80,7 @@ const sections = [
       },
       {
         id: 'idealHomeAge',
-        number: 7,
+        number: 8,
         text: 'At what age would you ideally like to own your first home?',
         type: 'radio',
         field: 'idealHomeAge',
@@ -94,7 +88,7 @@ const sections = [
       },
       {
         id: 'homeType',
-        number: 8,
+        number: 9,
         text: 'What type of home would you like to own first?',
         type: 'radio',
         field: 'homeType',
@@ -108,7 +102,7 @@ const sections = [
       },
       {
         id: 'biggestObstacle',
-        number: 9,
+        number: 10,
         text: 'What is your biggest obstacle to owning a home?',
         type: 'radio',
         field: 'biggestObstacle',
@@ -123,7 +117,7 @@ const sections = [
       },
       {
         id: 'preferredCity',
-        number: 10,
+        number: 11,
         text: 'Which city would you most likely buy your first home in?',
         type: 'radio-other',
         field: 'preferredCity',
@@ -140,14 +134,14 @@ const sections = [
     questions: [
       {
         id: 'savesMonthly',
-        number: 11,
+        number: 12,
         text: 'Do you currently save money monthly?',
         type: 'yesno',
         field: 'savesMonthly',
       },
       {
         id: 'monthlySavingsAmount',
-        number: 12,
+        number: 13,
         text: 'How much can you comfortably save monthly toward home ownership?',
         type: 'radio',
         field: 'monthlySavingsAmount',
@@ -161,7 +155,7 @@ const sections = [
       },
       {
         id: 'willJoinSavingsPlan',
-        number: 13,
+        number: 14,
         text: 'Would you be willing to join a structured Home Savings Plan if it helps you own a home sooner?',
         type: 'radio',
         field: 'willJoinSavingsPlan',
@@ -169,7 +163,7 @@ const sections = [
       },
       {
         id: 'equityContribution',
-        number: 14,
+        number: 15,
         text: 'If a home ownership programme required an initial equity contribution, what amount would be realistic for you?',
         type: 'radio',
         field: 'equityContribution',
@@ -190,7 +184,7 @@ const sections = [
     questions: [
       {
         id: 'preferredProduct',
-        number: 15,
+        number: 16,
         text: 'Which of these options appeals most to you?',
         type: 'radio',
         field: 'preferredProduct',
@@ -204,7 +198,7 @@ const sections = [
       },
       {
         id: 'wouldJoinSmallAmount',
-        number: 16,
+        number: 17,
         text: 'If you could start your home ownership journey with as little as ₦5,000 – ₦10,000 monthly, would you join?',
         type: 'radio',
         field: 'wouldJoinSmallAmount',
@@ -212,14 +206,14 @@ const sections = [
       },
       {
         id: 'wantsInvestmentReturns',
-        number: 17,
+        number: 18,
         text: 'Would you like to earn investment returns while saving toward your home?',
         type: 'yesno',
         field: 'wantsInvestmentReturns',
       },
       {
         id: 'desiredBenefits',
-        number: 18,
+        number: 19,
         text: 'What additional benefits would encourage you to join?',
         subtitle: 'Select all that apply',
         type: 'multiselect',
@@ -242,24 +236,30 @@ const sections = [
     questions: [
       {
         id: 'wantsEarlyAccess',
-        number: 19,
+        number: 20,
         text: 'Would you like to be among the first participants in the Start Small, Own Sooner Programme?',
         type: 'yesno',
         field: 'wantsEarlyAccess',
       },
       {
         id: 'wantsFreeAssessment',
-        number: 20,
+        number: 21,
         text: 'Would you like a free Home Ownership Readiness Assessment?',
         type: 'yesno',
         field: 'wantsFreeAssessment',
       },
       {
-        id: 'contact',
-        number: 21,
-        text: 'Please provide your contact details',
-        type: 'contact',
-        fields: ['fullName', 'phoneNumber', 'emailAddress'],
+        id: 'ownershipStatement',
+        number: 22,
+        text: 'Which statement best describes you?',
+        type: 'radio',
+        field: 'ownershipStatement',
+        options: [
+          'I want to own a home immediately.',
+          'I am willing to save first.',
+          'I want to invest while preparing for home ownership.',
+          'I need guidance before I can decide.',
+        ],
       },
     ],
   },
