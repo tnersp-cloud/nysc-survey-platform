@@ -221,10 +221,7 @@ const sections = [
         options: [
           'Financial Literacy Training',
           'Career Support',
-          'Investment Education',
           'Entrepreneurship Support',
-          'Home Ownership Coaching',
-          'Access to Mortgages',
         ],
       },
     ],
@@ -260,6 +257,14 @@ const sections = [
           'I want to invest while preparing for home ownership.',
           'I need guidance before I can decide.',
         ],
+      },
+      {
+        id: 'ndpaConsent',
+        number: 22,
+        text: 'Privacy Policy & Data Protection Consent',
+        subtitle: 'In accordance with the Nigeria Data Protection Act (NDPA), by checking this box, you consent to the collection and processing of your personal data for the purpose of the Start Small, Own Sooner Programme. Your data will be kept secure and used only for programme-related communications and assessments.',
+        type: 'consent',
+        field: 'ndpaConsent',
       },
     ],
   },
@@ -300,6 +305,7 @@ const initialFormData = {
   fullName: '',
   phoneNumber: '',
   emailAddress: '',
+  ndpaConsent: false,
 }
 
 // ─── Eligibility / Lead Scoring ─────────────────────────────────────────────
@@ -396,6 +402,9 @@ const NyscSurvey = ({ onSubmit }) => {
     }
     if (q.type === 'multiselect') {
       return (formData[q.field] || []).length > 0
+    }
+    if (q.type === 'consent') {
+      return formData[q.field] === true
     }
     if (q.type === 'radio-other') {
       const val = formData[q.field]
@@ -688,6 +697,32 @@ const NyscSurvey = ({ onSubmit }) => {
     </div>
   )
 
+  const renderConsent = (q) => (
+    <div className="survey-options-grid">
+      <motion.label
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.01, x: 2 }}
+        className={`survey-option checkbox-option ${formData[q.field] ? 'selected' : ''}`}
+        onClick={() => handleInputChange(q.field, !formData[q.field])}
+      >
+        <span className="survey-option-checkbox">
+          {formData[q.field] && (
+            <motion.span
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', stiffness: 400 }}
+              className="checkbox-tick"
+            >
+              ✓
+            </motion.span>
+          )}
+        </span>
+        <span className="survey-option-text">I consent and agree to the Privacy Policy</span>
+      </motion.label>
+    </div>
+  )
+
   const renderQuestion = (q) => {
     switch (q.type) {
       case 'radio':
@@ -702,6 +737,8 @@ const NyscSurvey = ({ onSubmit }) => {
         return renderTextInput(q)
       case 'contact':
         return renderContact()
+      case 'consent':
+        return renderConsent(q)
       default:
         return null
     }

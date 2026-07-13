@@ -45,27 +45,35 @@ const HEADERS = [
 export const calculateEligibilityStatus = (data) => {
   let score = 0
 
+  const savesMonthly = data.savesMonthly || data.saves_monthly
+  const monthlySavingsAmount = data.monthlySavingsAmount || data.monthly_savings_amount
+  const willJoinSavingsPlan = data.willJoinSavingsPlan || data.will_join_savings_plan
+  const wouldJoinSmallAmount = data.wouldJoinSmallAmount || data.would_join_small_amount
+  const wantsEarlyAccess = data.wantsEarlyAccess || data.wants_early_access
+  const wantsFreeAssessment = data.wantsFreeAssessment || data.wants_free_assessment
+  const equityContribution = data.equityContribution || data.equity_contribution
+
   // Savings behaviour
-  if (data.savesMonthly === 'Yes') score += 2
-  if (['₦50,001 – ₦100,000', 'Above ₦100,000'].includes(data.monthlySavingsAmount)) score += 3
-  else if (['₦25,001 – ₦50,000'].includes(data.monthlySavingsAmount)) score += 2
-  else if (['₦10,000 – ₦25,000'].includes(data.monthlySavingsAmount)) score += 1
+  if (savesMonthly === 'Yes') score += 2
+  if (['₦50,001 – ₦100,000', 'Above ₦100,000'].includes(monthlySavingsAmount)) score += 3
+  else if (['₦25,001 – ₦50,000'].includes(monthlySavingsAmount)) score += 2
+  else if (['₦10,000 – ₦25,000'].includes(monthlySavingsAmount)) score += 1
 
   // Willingness
-  if (data.willJoinSavingsPlan === 'Yes') score += 2
-  else if (data.willJoinSavingsPlan === 'Maybe') score += 1
+  if (willJoinSavingsPlan === 'Yes') score += 2
+  else if (willJoinSavingsPlan === 'Maybe') score += 1
 
-  if (data.wouldJoinSmallAmount === 'Yes') score += 2
-  else if (data.wouldJoinSmallAmount === 'Maybe') score += 1
+  if (wouldJoinSmallAmount === 'Yes') score += 2
+  else if (wouldJoinSmallAmount === 'Maybe') score += 1
 
   // Programme interest
-  if (data.wantsEarlyAccess === 'Yes') score += 2
-  if (data.wantsFreeAssessment === 'Yes') score += 1
+  if (wantsEarlyAccess === 'Yes') score += 2
+  if (wantsFreeAssessment === 'Yes') score += 1
 
   // Equity contribution
-  if (['₦500,001 – ₦1 million', 'Above ₦1 million'].includes(data.equityContribution)) score += 3
-  else if (['₦250,001 – ₦500,000'].includes(data.equityContribution)) score += 2
-  else if (['₦100,000 – ₦250,000'].includes(data.equityContribution)) score += 1
+  if (['₦500,001 – ₦1 million', 'Above ₦1 million'].includes(equityContribution)) score += 3
+  else if (['₦250,001 – ₦500,000'].includes(equityContribution)) score += 2
+  else if (['₦100,000 – ₦250,000'].includes(equityContribution)) score += 1
 
   if (score >= 12) return 'High Priority'
   if (score >= 8) return 'Qualified'
@@ -80,31 +88,31 @@ const buildRow = (data, timestamp) => ({
   'Timestamp': timestamp,
   'Age Range': data.age || '',
   'Gender': data.gender || '',
-  'Current Status': data.currentStatus || '',
-  'Ownership Statement': data.ownershipStatement || '',
+  'Current Status': data.currentStatus || data.current_status || '',
+  'Ownership Statement': data.ownershipStatement || data.ownership_statement || '',
   'State': data.state || '',
-  'Field of Study': data.fieldOfStudy || '',
-  'Believes Home Before 35': data.believeHomeBefore35 || '',
-  'Ideal Home Age': data.idealHomeAge || '',
-  'Home Type Preference': data.homeType || '',
-  'Biggest Obstacle': data.biggestObstacle || '',
-  'Preferred City': data.preferredCity || '',
-  'Saves Monthly': data.savesMonthly || '',
-  'Monthly Savings Amount': data.monthlySavingsAmount || '',
-  'Willing to Join Savings Plan': data.willJoinSavingsPlan || '',
-  'Equity Contribution Range': data.equityContribution || '',
-  'Preferred Product': data.preferredProduct || '',
-  'Would Join at ₦5k–₦10k/mo': data.wouldJoinSmallAmount || '',
-  'Wants Investment Returns': data.wantsInvestmentReturns || '',
+  'Field of Study': data.fieldOfStudy || data.field_of_study || '',
+  'Believes Home Before 35': data.believeHomeBefore35 || data.believe_home_before_35 || '',
+  'Ideal Home Age': data.idealHomeAge || data.ideal_home_age || '',
+  'Home Type Preference': data.homeType || data.home_type || '',
+  'Biggest Obstacle': data.biggestObstacle || data.biggest_obstacle || '',
+  'Preferred City': data.preferredCity || data.preferred_city || '',
+  'Saves Monthly': data.savesMonthly || data.saves_monthly || '',
+  'Monthly Savings Amount': data.monthlySavingsAmount || data.monthly_savings_amount || '',
+  'Willing to Join Savings Plan': data.willJoinSavingsPlan || data.will_join_savings_plan || '',
+  'Equity Contribution Range': data.equityContribution || data.equity_contribution || '',
+  'Preferred Product': data.preferredProduct || data.preferred_product || '',
+  'Would Join at ₦5k–₦10k/mo': data.wouldJoinSmallAmount || data.would_join_small_amount || '',
+  'Wants Investment Returns': data.wantsInvestmentReturns || data.wants_investment_returns || '',
   'Desired Benefits': Array.isArray(data.desiredBenefits)
     ? data.desiredBenefits.join(', ')
-    : (data.desiredBenefits || ''),
-  'Wants Early Access': data.wantsEarlyAccess || '',
-  'Wants Free Assessment': data.wantsFreeAssessment || '',
-  'Full Name': data.fullName || '',
-  'Phone Number': data.phoneNumber || '',
-  'Email Address': data.emailAddress || '',
-  'Eligibility Status': data.eligibilityStatus || calculateEligibilityStatus(data),
+    : (data.desiredBenefits || data.desired_benefits || ''),
+  'Wants Early Access': data.wantsEarlyAccess || data.wants_early_access || '',
+  'Wants Free Assessment': data.wantsFreeAssessment || data.wants_free_assessment || '',
+  'Full Name': data.fullName || data.full_name || '',
+  'Phone Number': data.phoneNumber || data.phone_number || '',
+  'Email Address': data.emailAddress || data.email_address || '',
+  'Eligibility Status': data.eligibilityStatus || data.eligibility_status || calculateEligibilityStatus(data),
 })
 
 /**

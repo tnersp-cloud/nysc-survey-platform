@@ -53,32 +53,26 @@ CREATE TABLE survey_responses (
   ownership_statement TEXT,
   state TEXT,
   field_of_study TEXT,
-
   believe_home_before_35 TEXT,
   ideal_home_age TEXT,
   home_type TEXT,
   biggest_obstacle TEXT,
   preferred_city TEXT,
   preferred_city_other TEXT,
-
   saves_monthly TEXT,
   monthly_savings_amount TEXT,
   will_join_savings_plan TEXT,
   equity_contribution TEXT,
-
   preferred_product TEXT,
   would_join_small_amount TEXT,
   wants_investment_returns TEXT,
   desired_benefits TEXT[],
-
   wants_early_access TEXT,
   wants_free_assessment TEXT,
-
-  full_name TEXT,
-  phone_number TEXT,
-  email_address TEXT,
-
-  eligibility_status TEXT
+  full_name TEXT NOT NULL,
+  phone_number TEXT NOT NULL,
+  email_address TEXT NOT NULL,
+  eligibility_status TEXT NOT NULL
 );
 
 -- Create index for faster queries
